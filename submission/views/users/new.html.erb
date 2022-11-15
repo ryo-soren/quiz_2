@@ -1,0 +1,30 @@
+<%=form_with model: @user, class:"m-3" do |form|%>
+    <div class="form-group">
+        <%= form.label :first_name %>
+        <%= form.text_field :first_name, class:"form-control", placeholder:"First Name"%>
+    </div>
+    <div class="form-group">
+        <%= form.label :last_name %>
+        <%= form.text_field :last_name, class:"form-control", placeholder:"Last Name"%>
+    </div>
+    <div class="form-group">
+        <%= form.label :email %>
+        <%= form.text_field :email, class:"form-control", placeholder:"Email"%>
+    </div>
+    <% if !current_user %>
+    <div class="form-group">
+        <%= form.label :password %>
+        <%= form.password_field :password, class:"form-control", placeholder:"Password" %>
+    </div>
+    <div class="form-group">
+        <%= form.label :password_confirmation %>
+        <%= form.password_field :password_confirmation, class:"form-control", placeholder:"Password" %>
+    </div>
+    <% end %>
+    <% if current_user %>
+    <%= form.submit "Save", class:"btn btn-outline-primary my-3"%>
+    <%= link_to "Change Password", user_edit_password_path(current_user), class:"text-decoration-none"%>
+        <% else %>        
+    <%= form.submit "Sign-Up", class:"btn btn-outline-primary my-3"%>
+    <% end %>
+<% end %>
