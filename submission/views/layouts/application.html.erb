@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BlogOnRails</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+    <nav class="navbar navbar-light text-primary mt-2">
+        <a class="navbar-brand text-primary mx-4" href="<%= root_path %>">Idea Factory</a>
+        <div id="navbarSupportedContent">
+          <ul class="list-inline center mx-4">
+            <li class="list-inline-item">
+              <a class="nav-link" href="<%= root_path %>">Home</a>
+            </li>         
+            <% if user_signed_in? %>
+            <li class="list-inline-item">
+              <a class="nav-link" href="<%= new_idea_path %>">New Idea</a>
+            </li>
+            <li class="list-inline-item">
+              <%= button_to 'Sign-Out', session_path(current_user), method: :delete, class:"btn btn-primary"%>
+            </li>
+            <% else %>
+            <li class="list-inline-item">
+              <a class="nav-link" href="<%= new_user_path %>">Sign-Up</a>
+            </li>
+            <li class="list-inline-item">
+              <%= link_to 'Sign-in', new_session_path, method: :get, class:"btn btn-primary"%>
+            </li>
+            <% end %>
+            
+          </ul>
+        </div>
+      </nav>
+  <body>
+    <% flash.each do |type, message| %>
+      <div class="alert alert-info" role=alert >
+      <%= message %>
+      </div>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>

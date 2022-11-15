@@ -1,0 +1,55 @@
+<div class="card m-3 border-0">
+    <div class="card-body" id="ideaCard">
+        <div class="card-body">
+            <h1 class="card-title"><%=@idea.title%> </h1>
+            <p class="card-text"><%=@idea.body%> </p>
+        </div>
+        <div class="card-body">
+
+            <% if can?(:crud, @idea) %>
+                <div class="d-flex">
+                    <%= link_to 'Edit', edit_idea_path(@idea.id), class:"btn btn-outline-primary" %>
+                    <%= button_to 'Delete', idea_path(@idea), method: :delete, class:"btn btn-outline-primary mx-1" %>
+                    <div class='ms-3 text-primary'><%= @idea.likes.count %> Likes</div>
+                </div>
+            <% else %>
+                <div class="d-flex">
+                <% if can?(:like, @idea) %>
+                    <%like = current_user.likes.find_by_idea_id(@idea.id)%>
+                    <% if like %>
+                        <%= button_to 'Unlike', like_path(@idea), method: :delete, class:"btn btn-outline-primary btn-sm" %> 
+                    <% else %>
+                        <%= button_to 'Like', idea_likes_path(@idea), method: :post, class:"btn btn-primary btn-sm" %>   
+                    <% end %>
+                <% end %>
+                
+                <% if can?(:like, @idea) %>
+                    <div class='ms-3 text-primary'><%= @idea.likes.count%> Likes</div>                
+                <% else %>
+                    <div class='text-primary'><%= @idea.likes.count%> Likes</div>                
+                <% end %>
+                
+            <% end %>
+        </div>
+    </div>
+    <div class="card-body" id="reviewFormCard">
+        <%=form_with(model: [@idea, @review]) do |form|%>
+            <div class="form-group">
+            <h2>review</h2>
+            <%= form.text_area :body, class:"form-control" %>
+            </div>
+        <%= form.submit "Submit", class:"btn btn-outline-primary my-3"%>
+        <% end %>
+    </div>
+    <% @reviews.each do |review|%>
+    <div class="card-body" id="reviewsCard">
+        <p class="card-text"><%= review.body%> </p>
+        <div class="d-flex">
+            <% if can?(:crud, review) %>
+                <%= button_to 'Delete', idea_review_path(@idea.id, review.id), method: :delete, class:"btn btn-link btn-sm text-decoration-none" %>
+            <% end %>
+        </div>
+    </div>
+<%end%>
+</div>
+
